@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competencias Ciudadanas — Saber Pro 100 Preguntas</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="theme-ciudadanas">
+
+  <!-- Cabecera Institucional Superior -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand-wrapper">
+        <a href="index.html" class="brand-badge" title="Volver al menú principal">SABER PRO</a>
+        <div>
+          <h1 class="brand-title">Competencias Ciudadanas</h1>
+          <span class="brand-subtitle">Cuadernillo Autónomo de Práctica — 100 Preguntas</span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <a href="index.html" class="btn-nav" style="font-size:0.85rem;">Menú de Cuadernillos</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Cronómetro y Progreso -->
+  <div id="timer-bar-wrapper" class="timer-bar-wrapper" style="display:none;">
+    <div class="container timer-bar">
+      <div class="timer-box">
+        <span class="timer-label">Tiempo</span>
+        <span id="timer-display" class="timer-display">02:00</span>
+        <div class="timer-controls-btns">
+          <button id="btn-pause-timer" class="btn-icon" title="Pausar o reanudar el cronómetro">Pausar</button>
+        </div>
+      </div>
+
+      <div class="progress-info-group">
+        <div class="progress-text-row">
+          <span id="progress-text">0 de 100 respondidas (0%)</span>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Referencia total: 200 min</span>
+        </div>
+        <div class="progress-track">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <div class="time-track">
+          <div id="time-fill" class="time-fill"></div>
+        </div>
+      </div>
+
+      <div class="header-action-group">
+        <button id="btn-finish" class="btn-nav btn-finish">Finalizar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- VISTA INICIAL: Pantalla de Bienvenida y Configuración -->
+      <section id="start-view" class="view-panel start-view">
+        <div class="start-header">
+          <span class="badge badge-module">Módulo Genérico Saber Pro</span>
+          <h2 class="start-title">Competencias Ciudadanas</h2>
+          <p class="start-desc">
+            Evalúa los conocimientos y habilidades cognitivas indispensables para ejercer la ciudadanía, 
+            comprender los fundamentos del Estado Social de Derecho y analizar dilemas sociales desde perspectivas múltiples.
+          </p>
+        </div>
+
+        <div id="resume-session-box"></div>
+
+        <div class="info-cards-grid">
+          <div class="info-card">
+            <div class="info-card-val">100</div>
+            <div class="info-card-label">Preguntas Originales</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-val">120 s</div>
+            <div class="info-card-label">Tiempo Sugerido / Pregunta</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-val">4</div>
+            <div class="info-card-label">Competencias Evaluadas</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-val">3 Niveles</div>
+            <div class="info-card-label">Básico, Medio, Avanzado</div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <h3 style="margin-bottom:0.75rem; font-size:1.05rem; color:var(--theme-primary);">Configuración de tu Sesión de Práctica</h3>
+          
+          <div class="config-row">
+            <div>
+              <div class="config-label">Modo de Aprendizaje</div>
+              <div class="config-desc">Elige cuándo deseas consultar la justificación pedagógica y el análisis de distractores.</div>
+            </div>
+            <div style="display:flex; gap:1rem;">
+              <label style="display:flex; align-items:center; gap:0.35rem; font-size:0.9rem; cursor:pointer;">
+                <input type="radio" name="quiz-mode" value="study" checked>
+                <span><strong>Modo Estudio</strong> (Retroalimentación inmediata)</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.35rem; font-size:0.9rem; cursor:pointer;">
+                <input type="radio" name="quiz-mode" value="simulacro">
+                <span><strong>Modo Simulacro</strong> (Resultados al finalizar)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="config-row">
+            <div>
+              <div class="config-label">Tiempo Objetivo por Pregunta</div>
+              <div class="config-desc">Entrena la velocidad de resolución recomendada para la prueba oficial.</div>
+            </div>
+            <div>
+              <select id="select-target-time" class="filter-select" style="min-width:180px;">
+                <option value="120" selected>120 segundos (Estándar 2 min)</option>
+                <option value="90">90 segundos (Práctica Rápida)</option>
+                <option value="180">180 segundos (Práctica Pausada)</option>
+                <option value="0">Sin límite de tiempo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice-box">
+          <strong>Aviso de Persistencia Local:</strong> Tu progreso se almacena automáticamente en este navegador mediante <code>localStorage</code>. 
+          Podrás salir y reanudar la práctica cuando lo desees, siempre que no borres los datos del sitio.
+        </div>
+
+        <button id="btn-start-quiz" class="btn-nav btn-primary btn-cta">Comenzar Cuadernillo (100 Preguntas)</button>
+      </section>
+
+      <!-- VISTA DEL CUADERNILLO ACTIVO -->
+      <section id="quiz-view" class="quiz-layout" style="display:none;">
+        <div id="review-banner" style="display:none; grid-column: 1 / -1;"></div>
+
+        <!-- Columna Izquierda: Tarjeta de Pregunta -->
+        <div class="question-card" id="question-card">
+          <div class="question-meta-bar">
+            <div class="meta-badges">
+              <span id="question-number" class="badge" style="background:var(--text-main); color:#fff;">Pregunta 1 de 100</span>
+              <span id="badge-competencia" class="badge badge-module">Pensamiento social</span>
+              <span id="badge-dificultad" class="badge badge-difficulty-intermedio">Intermedio</span>
+              <span id="badge-part" class="badge badge-part" style="display:none;"></span>
+            </div>
+            <div>
+              <button id="btn-flag" class="btn-flag">Marcar para revisar</button>
+            </div>
+          </div>
+
+          <!-- Contexto o Caso Ciudadano -->
+          <div id="question-context" class="question-context-box" style="display:none;"></div>
+
+          <!-- Gráficos o Tablas -->
+          <div id="question-graphic" class="graphic-container" style="display:none;"></div>
+
+          <!-- Enunciado de la Pregunta -->
+          <div id="question-prompt" class="question-prompt"></div>
+
+          <!-- Opciones de Respuesta -->
+          <div id="options-container" class="options-group" role="radiogroup" aria-label="Opciones de respuesta"></div>
+
+          <!-- Tarjeta de Retroalimentación -->
+          <div id="feedback-card" class="feedback-card" style="display:none;"></div>
+
+          <!-- Barra de Navegación Inferior -->
+          <div class="question-actions-bar">
+            <button id="btn-prev" class="btn-nav">Anterior</button>
+            <div style="display:flex; gap:0.5rem;">
+              <button id="btn-next" class="btn-nav btn-primary">Siguiente</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Barra Lateral con Filtros y Cuadrícula -->
+        <aside class="sidebar-panel">
+          <div class="sidebar-title">
+            <span>Navegación de Preguntas</span>
+            <span style="font-size:0.8rem; color:var(--text-muted);">100 Ítems</span>
+          </div>
+
+          <div class="stats-legend">
+            <div class="legend-item"><span class="legend-dot dot-answered"></span> Respondida</div>
+            <div class="legend-item"><span class="legend-dot dot-pending"></span> Pendiente</div>
+            <div class="legend-item"><span class="legend-dot dot-flagged"></span> Marcada</div>
+            <div class="legend-item"><span class="legend-dot dot-current"></span> Actual</div>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-skill">Filtrar por Competencia:</label>
+            <select id="filter-skill" class="filter-select">
+              <option value="all">Todas las competencias</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-difficulty">Filtrar por Dificultad:</label>
+            <select id="filter-difficulty" class="filter-select">
+              <option value="all">Todas las dificultades</option>
+              <option value="Básico">Básico</option>
+              <option value="Intermedio">Intermedio</option>
+              <option value="Avanzado">Avanzado</option>
+            </select>
+          </div>
+
+          <div id="question-grid" class="question-grid" aria-label="Cuadrícula de 100 preguntas"></div>
+        </aside>
+      </section>
+
+      <!-- VISTA DE RESULTADOS -->
+      <section id="results-view" style="display:none;"></section>
+
+    </div>
+  </main>
+
+  <!-- Modal Accesible de Confirmación para Finalizar -->
+  <div id="finish-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-dialog">
+      <h3 id="modal-title" class="modal-title">¿Deseas finalizar este cuadernillo?</h3>
+      <div id="modal-summary" class="modal-body"></div>
+      <div class="modal-actions">
+        <button id="btn-cancel-finish" class="btn-nav">Continuar practicando</button>
+        <button id="btn-confirm-finish" class="btn-nav btn-primary">Sí, finalizar y ver informe</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Plataforma Interactiva de Preparación Saber Pro — Módulo de Competencias Ciudadanas.</p>
+      <p style="margin-top:0.25rem;">Basado en los marcos de referencia oficiales del ICFES y la Constitución Política de Colombia.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data/competencias_ciudadanas.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.PREGUNTAS_COMPETENCIAS_CIUDADANAS && window.SaberProQuiz) {
+        new window.SaberProQuiz({
+          moduleId: 'ciudadanas',
+          moduleName: 'Competencias Ciudadanas',
+          questions: window.PREGUNTAS_COMPETENCIAS_CIUDADANAS,
+          isWritingModule: false
+        });
+      } else {
+        console.error('Error al cargar datos de Competencias Ciudadanas.');
+      }
+    });
+  </script>
+</body>
+</html>
